@@ -19,7 +19,7 @@ void setup_M()
   stateMachine.AddTransition(MonitorLuz, TemperaturaM, []() { return Inputc == Timeout; });
   stateMachine.AddTransition(TemperaturaM, MonitorLuz, []() { return Inputc == Timeout; });
 
-  stateMachine.AddTransition(TemperaturaM, ALARMA, []() { return Inputc == TEMP; });
+  stateMachine.AddTransition(TemperaturaM, ALARMA, []() { return Inputc == Temperatur; });
   stateMachine.AddTransition(ALARMA, TemperaturaM, []() { return Inputc == Timeout; });
 
   //configurar eventos de estado
@@ -44,7 +44,7 @@ void setup_M()
  */
 void inputInit()
 {
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println("Estado INIT");
   Serial.println("A   B   C   D   E   F");
   Serial.println("    X                ");
@@ -67,7 +67,7 @@ void outputInit()
  */
 void inputBloq()
 { 
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println("Estado BLOQUEADO");
   Serial.println("A   B   C   D   E   F");
   Serial.println("X                    ");
@@ -91,7 +91,7 @@ void outputBloq()
 void inputLuz()
 {
   Serial.println();
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println(" Estado Luz");
   Serial.println("A   B   C   D   E   F");
   Serial.println("        X            ");
@@ -117,7 +117,7 @@ void outputLuz()
  */
 void inputALer()
 {
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println("Estado Alerta Luz");
   Serial.println("A   B   C   D   E   F");
   Serial.println("            X        ");
@@ -142,7 +142,7 @@ void outputAler()
  */
 void inputTem()
 {
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println("Estado Temperatura");
   Serial.println("A   B   C   D   E   F");
   Serial.println("                X    ");
@@ -167,7 +167,7 @@ void outputTem()
  */
 void inputAlar()
 {
-  Inputc = Input::Unknown;
+  Inputc = Input::NoInfo;
   Serial.println(" Estado Alarma");
   Serial.println("A   B   C   D   E   F");
   Serial.println("                    X");
@@ -186,3 +186,4 @@ void outputAlar()
   Tarea5.Stop();
   Tiempo4.Stop();
 }
+
