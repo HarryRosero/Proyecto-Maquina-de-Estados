@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "author": "HarryRosero",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard-half", "id": "bb1", "top": 208.2, "left": 415.6, "attrs": {} },
+    { "type": "wokwi-arduino-mega", "id": "mega", "top": -28.2, "left": -13.2, "attrs": {} },
+    { "type": "wokwi-lcd1602", "id": "lcd1", "top": -284.57, "left": 140.8, "attrs": {} },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -395.6,
+      "left": 754.4,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": -226.4,
+      "left": 490.7,
+      "attrs": { "common": "cathode" }
+    },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -174.1, "left": 604.6, "attrs": {} },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": 50.4,
+      "left": -113.4,
+      "attrs": { "volume": "0.1" }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr1",
+      "top": 233.6,
+      "left": 87.2,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ntc-temperature-sensor",
+      "id": "ntc1",
+      "top": -275.8,
+      "left": 556.2,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "lcd1:RS", "mega:12", "green", [ "v9.6", "h-86.1" ] ],
+    [ "lcd1:E", "mega:11", "green", [ "v19.2", "h-96" ] ],
+    [ "lcd1:D4", "mega:5", "green", [ "v28.8", "h-76.8" ] ],
+    [ "lcd1:D5", "mega:4", "green", [ "v38.4", "h-86.3" ] ],
+    [ "lcd1:D6", "mega:3", "green", [ "v48", "h-86.2" ] ],
+    [ "lcd1:D7", "mega:2", "green", [ "v57.6", "h-86.1" ] ],
+    [ "mega:5V.2", "bb1:tp.1", "red", [ "v1", "h130.2" ] ],
+    [ "mega:GND.5", "bb1:tn.1", "black", [ "v0" ] ],
+    [ "lcd1:VSS", "bb1:tn.2", "black", [ "v57.6", "h316.8" ] ],
+    [ "lcd1:VDD", "bb1:tp.3", "red", [ "v48", "h316.9" ] ],
+    [ "lcd1:RW", "bb1:tn.4", "black", [ "v38.4", "h230.3" ] ],
+    [ "lcd1:A", "bb1:tp.5", "red", [ "v28.8", "h134.3" ] ],
+    [ "lcd1:K", "bb1:tn.6", "black", [ "v19.2", "h144" ] ],
+    [ "keypad1:R1", "mega:24", "green", [ "v0" ] ],
+    [ "keypad1:R2", "mega:26", "green", [ "v0" ] ],
+    [ "keypad1:R3", "mega:28", "green", [ "v0" ] ],
+    [ "keypad1:R4", "mega:30", "green", [ "v0" ] ],
+    [ "keypad1:C1", "mega:32", "green", [ "v0" ] ],
+    [ "keypad1:C2", "mega:34", "green", [ "v0" ] ],
+    [ "keypad1:C3", "mega:36", "green", [ "v0" ] ],
+    [ "ldr1:VCC", "bb1:tp.12", "red", [ "h316.8", "v-9.6", "h-1.6" ] ],
+    [ "ldr1:GND", "bb1:tn.13", "black", [ "h76.8", "v-0.4", "h248" ] ],
+    [ "rgb1:G", "mega:9", "green", [ "v115.2", "h-373.1" ] ],
+    [ "rgb1:B", "mega:10", "blue", [ "v105.6", "h-392" ] ],
+    [ "rgb1:R", "mega:8", "red", [ "v115.2", "h-403.2" ] ],
+    [ "bz1:2", "mega:7", "green", [ "v48", "h153.2" ] ],
+    [ "bz1:1", "mega:GND.2", "green", [ "v28.8", "h96", "v-26.1" ] ],
+    [ "ldr1:AO", "mega:A0", "green", [ "h0" ] ],
+    [ "pot1:GND", "bb1:tn.16", "black", [ "v0" ] ],
+    [ "pot1:VCC", "bb1:tp.18", "red", [ "v0" ] ],
+    [ "pot1:SIG", "lcd1:V0", "green", [ "v9.6", "h-442" ] ],
+    [ "rgb1:COM", "bb1:tn.10", "black", [ "v28.4", "h28.9" ] ],
+    [ "ntc1:GND", "mega:GND.1", "black", [ "h28.8", "v201.6", "h-614.4" ] ],
+    [ "ntc1:VCC", "mega:VIN", "red", [ "h9.6", "v412.8", "h-518.4" ] ],
+    [ "ntc1:OUT", "mega:A1", "green", [ "h-9.6", "v412.7", "h-480" ] ]
+  ],
+  "dependencies": {}
+}
