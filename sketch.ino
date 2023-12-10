@@ -3,12 +3,15 @@
 \date   2023-08-12
 author Harry Rosero <harryrosero@unicauca.edu.co> - Daniel Muñoz <danielfmunoz@unicauca.edu.co>
 @brief  Final Arquiitectura.
+
 \par Copyright
 Information contained here in is proprietary to and constitutes valuable
 confidential trade secrets of Unicauca, and
 is subject to restrictions on use and disclosure.
+
 \par
 Copyright (c) Unicauca 2022. All rights reserved.
+
 \par
 The copyright notices above do not evidence any actual or
 intended publication of this material.
@@ -77,39 +80,39 @@ int notes = sizeof(melodia) / sizeof(melodia[0]) / 2;
 String Escribir(); 
 
 void Seguridad();
-AsyncTask asyncTask_Seguridad(0, Seguridad);
+AsyncTask Tarea1(0, Seguridad);
 
-void MonitorLu();
-AsyncTask asyncTask2MonitorLu(0, true, MonitorLu);
+void LuzM();
+AsyncTask Tarea2(0, true, LuzM);
 
-void Alerta_led();
-AsyncTask asyncTask3Alerta(0, true, Alerta_led);
+void Alerta();
+AsyncTask Tarea3(0, true, Alerta);
 
 void Temperatura();
-AsyncTask asyncTask4Temperatura(500, true, Temperatura);
+AsyncTask Tarea4(500, true, Temperatura);
 
-void AlarmaTem();
-AsyncTask asyncTask4Alarma(0, true, AlarmaTem);
+void Alarma();
+AsyncTask Tarea5(0, true, Alarma);
 
-void Timeout_4sg();
-AsyncTask asyncTaskTime1(4000, Timeout_4sg);
-void Timeout_3sg();
-AsyncTask asyncTaskTime2(3000, Timeout_3sg);
-void Timeout_6sg();
-AsyncTask asyncTaskTime3(6000, Timeout_6sg);
-void Timeout_5sg();
-AsyncTask asyncTaskTime4(5000, Timeout_5sg);
+void Time4s();
+AsyncTask Tiempo1(4000, Time4s);
+void Time3s();
+AsyncTask Tiempo2(3000, Time3s);
+void Time6s();
+AsyncTask Tiempo3(6000, Time6s);
+void Time5s();
+AsyncTask Tiempo4(5000, Time5s);
 
 /********************************************//**
  * Enumeraciones para los estados y entradas de la máquina de estado
  ***********************************************/
 enum State
 {
-  INIT = 0,
+  Init = 0,
   BLOQUEO = 1,
-  MONITOR_LUZ = 2,
+  MonitorLuz = 2,
   ALERTA = 3,
-  MONITOR_TEMP = 4,
+  TemperaturaM = 4,
   ALARMA = 5
 };
 
@@ -117,7 +120,7 @@ enum Input
 {
   CORRECTO = 0,
   BLOQUEADO = 1,
-  TIME_OUT = 2,
+  Timeout = 2,
   LUZ = 3,
   TEMP = 4,
   Unknown = 5,
@@ -127,7 +130,7 @@ enum Input
  * Inicialización de la máquina de estado
  ***********************************************/
 StateMachine stateMachine(6, 9);
-Input currentInput;
+Input Inputc;
 
 /********************************************//**
  * Configuración inicial del Arduino
@@ -135,52 +138,52 @@ Input currentInput;
 void setup()
 {
   Serial.begin(9600);
-  pinMode(pingreen, OUTPUT);
-  pinMode(pinblue, OUTPUT);
-  pinMode(pinred, OUTPUT);
+  pinMode(pinVerde, OUTPUT);
+  pinMode(pinAzul, OUTPUT);
+  pinMode(pinRojo, OUTPUT);
 
   Serial.println("Starting State Machine...");
-  setup_State_Machine();
+  setup_M();
 
   Serial.println("Start Machine Started");
-  stateMachine.SetState(State::INIT, false, true);
+  stateMachine.SetState(State::Init, false, true);
   lcd.begin(16, 2);
 }
 
 void loop()
 {
   //Actualizar tarea asincrónica
-  asyncTask_Seguridad.Update();
-  asyncTask2MonitorLu.Update();
-  asyncTask3Alerta.Update();
-  asyncTask4Temperatura.Update();
-  asyncTask4Alarma.Update();
+  Tarea1.Update();
+  Tarea2.Update();
+  Tarea3.Update();
+  Tarea4.Update();
+  Tarea5.Update();
   
-  asyncTaskTime1.Update();
-  asyncTaskTime2.Update();
-  asyncTaskTime3.Update();
-  asyncTaskTime4.Update();
+  Tiempo1.Update();
+  Tiempo2.Update();
+  Tiempo3.Update();
+  Tiempo4.Update();
   //Actualizar máquina de estado
   stateMachine.Update();
  
 }
 
-void Timeout_4sg()
+void Time4s()
 {
-  currentInput = Input::TIME_OUT;
+  Inputc = Input::Timeout;
 }
-void Timeout_3sg()
+void Time3s()
 {
-  currentInput = Input::TIME_OUT; 
+  Inputc = Input::Timeout; 
  
 }
-void Timeout_6sg()
+void Time6s()
 {
-  currentInput = Input::TIME_OUT;  
+  Inputc = Input::Timeout;  
 }
-void Timeout_5sg()
+void Time5s()
 {
-  currentInput = Input::TIME_OUT; 
+  Inputc = Input::Timeout; 
 }
 /********************************************//**
  * Función para ingresar la contraseña
@@ -220,30 +223,30 @@ void Seguridad()
       lcd.print("contrasenia");
       lcd.setCursor(0,1);
       lcd.print("correcta");
-      digitalWrite(pingreen, HIGH);
+      digitalWrite(pinVerde, HIGH);
       delay(1000);
-      digitalWrite(pingreen, LOW);
-      currentInput = Input::CORRECTO;
+      digitalWrite(pinVerde, LOW);
+      Inputc = Input::CORRECTO;
       return; 
       // Sale de la función si la contraseña es correcta
     } else {
       lcd.print("Contrasenia");
       lcd.setCursor(0,1);
       lcd.print("incorrecta");
-      digitalWrite(pinblue, HIGH);
+      digitalWrite(pinAzul, HIGH);
       delay(1000);
-      digitalWrite(pinblue, LOW);
+      digitalWrite(pinAzul, LOW);
       delay(1000);
       lcd.clear();
     }
   }
     //No tiene mas intentos para ingresar la contraseña 
     lcd.print("Bloqueado");
-    digitalWrite(pinred, HIGH);
+    digitalWrite(pinRojo, HIGH);
     delay(1000);  
-    digitalWrite(pinred, LOW);
-    currentInput = Input::BLOQUEADO;
-    lcd.print(currentInput);
+    digitalWrite(pinRojo, LOW);
+    Inputc = Input::BLOQUEADO;
+    lcd.print(Inputc);
     delay(1000);
     lcd.clear();
 
@@ -251,7 +254,7 @@ void Seguridad()
 /********************************************//**
  *  Procedimiento para monitorear la luz
  ***********************************************/
-void MonitorLu()
+void LuzM()
 {
   lcd.clear();
   lcd.setCursor(0,0);
@@ -264,18 +267,18 @@ void MonitorLu()
   
   if (outputValue < 40)
   {
-    currentInput = Input::LUZ;
+    Inputc = Input::LUZ;
   }
 }
 /********************************************//**
  *  Procedimiento para monitorear la luz
  ***********************************************/
-void Alerta_led()
+void Alerta()
 {
   lcd.print("Alerta   ");
-  digitalWrite(pinred, HIGH);
+  digitalWrite(pinRojo, HIGH);
   delay(500);
-  digitalWrite(pinred, LOW);
+  digitalWrite(pinRojo, LOW);
   delay(200);
 }
 /********************************************//**
@@ -296,12 +299,12 @@ void Temperatura(){
 
   if(celsius > 30)
   {
-    currentInput = Input::TEMP;
+    Inputc = Input::TEMP;
   }
   Serial.println();
 }
 
-void AlarmaTem(){
+void Alarma(){
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Alarma");
