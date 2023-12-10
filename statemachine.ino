@@ -7,35 +7,35 @@
  /**
  * @brief Inicializa la máquina de estados y sus transiciones.
  */
-void setup_State_Machine()
+void setup_M()
 {
   // Configurar transiciones
-  stateMachine.AddTransition(INIT, BLOQUEO, []() { return currentInput == BLOQUEADO; });
-  stateMachine.AddTransition(INIT, MONITOR_LUZ, []() { return currentInput == CORRECTO; });
-  stateMachine.AddTransition(BLOQUEO, INIT, []() { return currentInput == TIME_OUT; });
+  stateMachine.AddTransition(Init, BLOQUEO, []() { return Inputc == BLOQUEADO; });
+  stateMachine.AddTransition(Init, MonitorLuz, []() { return Inputc == CORRECTO; });
+  stateMachine.AddTransition(BLOQUEO, Init, []() { return Inputc == Timeout; });
 
-  stateMachine.AddTransition(MONITOR_LUZ, ALERTA, []() { return currentInput == LUZ; });
-  stateMachine.AddTransition(ALERTA, MONITOR_LUZ, []() { return currentInput == TIME_OUT; });
-  stateMachine.AddTransition(MONITOR_LUZ, MONITOR_TEMP, []() { return currentInput == TIME_OUT; });
-  stateMachine.AddTransition(MONITOR_TEMP, MONITOR_LUZ, []() { return currentInput == TIME_OUT; });
+  stateMachine.AddTransition(MonitorLuz, ALERTA, []() { return Inputc == LUZ; });
+  stateMachine.AddTransition(ALERTA, MonitorLuz, []() { return Inputc == Timeout; });
+  stateMachine.AddTransition(MonitorLuz, TemperaturaM, []() { return Inputc == Timeout; });
+  stateMachine.AddTransition(TemperaturaM, MonitorLuz, []() { return Inputc == Timeout; });
 
-  stateMachine.AddTransition(MONITOR_TEMP, ALARMA, []() { return currentInput == TEMP; });
-  stateMachine.AddTransition(ALARMA, MONITOR_TEMP, []() { return currentInput == TIME_OUT; });
+  stateMachine.AddTransition(TemperaturaM, ALARMA, []() { return Inputc == TEMP; });
+  stateMachine.AddTransition(ALARMA, TemperaturaM, []() { return Inputc == Timeout; });
 
   //configurar eventos de estado
   //para que se ejecuten al entrar
-  stateMachine.SetOnEntering(INIT, inputInit);
-	stateMachine.SetOnEntering(BLOQUEO, inputBlo);
-  stateMachine.SetOnEntering(MONITOR_LUZ, inputLuz);
+  stateMachine.SetOnEntering(Init, inputInit);
+	stateMachine.SetOnEntering(BLOQUEO, inputBloq);
+  stateMachine.SetOnEntering(MonitorLuz, inputLuz);
 	stateMachine.SetOnEntering(ALERTA, inputALer);
-  stateMachine.SetOnEntering(MONITOR_TEMP, inputTem);
+  stateMachine.SetOnEntering(TemperaturaM, inputTem);
   stateMachine.SetOnEntering(ALARMA, inputAlar);
   //para que se ejecuten al salir
-  stateMachine.SetOnLeaving(INIT, outputInit);
-  stateMachine.SetOnLeaving(BLOQUEO, outputBlo);
-  stateMachine.SetOnLeaving(MONITOR_LUZ, outputLuz);
+  stateMachine.SetOnLeaving(Init, outputInit);
+  stateMachine.SetOnLeaving(BLOQUEO, outputBloq);
+  stateMachine.SetOnLeaving(MonitorLuz, outputLuz);
 	stateMachine.SetOnLeaving(ALERTA, outputAler);
-  stateMachine.SetOnLeaving(MONITOR_TEMP, outputTem);
+  stateMachine.SetOnLeaving(TemperaturaM, outputTem);
   stateMachine.SetOnLeaving(ALARMA, outputAlar);
 }
 
@@ -44,14 +44,14 @@ void setup_State_Machine()
  */
 void inputInit()
 {
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println("Estado INIT");
   Serial.println("A   B   C   D   E   F");
   Serial.println("    X                ");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0);
-  asyncTask_Seguridad.Start();
+  Tarea1.Start();
 }
 
 /**
@@ -59,57 +59,57 @@ void inputInit()
  */
 void outputInit()
 {
-  asyncTask_Seguridad.Stop();
+  Tarea1.Stop();
 }
 
 /**
  * @brief Función de entrada para el estado BLOQUEO de la máquina de estados.
  */
-void inputBlo()
+void inputBloq()
 { 
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println("Estado BLOQUEADO");
   Serial.println("A   B   C   D   E   F");
   Serial.println("X                    ");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0);
-  asyncTaskTime4.Start();
+  Tiempo4.Start();
 }
 
 /**
  * @brief Función de salida para el estado BLOQUEO de la máquina de estados.
  */
-void outputBlo()
+void outputBloq()
 {  
-  asyncTaskTime4.Stop();
+  Tiempo4.Stop();
 }
 
 /**
- * @brief Función de entrada para el estado MONITOR_LUZ de la máquina de estados.
+ * @brief Función de entrada para el estado MonitorLuz de la máquina de estados.
  */
 void inputLuz()
 {
   Serial.println();
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println(" Estado Luz");
   Serial.println("A   B   C   D   E   F");
   Serial.println("        X            ");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0);
-  asyncTask2MonitorLu.Start();
-  asyncTaskTime1.Start();  
+  Tarea2.Start();
+  Tiempo1.Start();  
 }
 
 /**
- * @brief Función de salida para el estado MONITOR_LUZ de la máquina de estados.
+ * @brief Función de salida para el estado MonitorLuz de la máquina de estados.
  */
 void outputLuz()
 {
 
-  asyncTask2MonitorLu.Stop();
-  asyncTaskTime1.Stop();
+  Tarea2.Stop();
+  Tiempo1.Stop();
 }
 
 /**
@@ -117,15 +117,15 @@ void outputLuz()
  */
 void inputALer()
 {
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println("Estado Alerta Luz");
   Serial.println("A   B   C   D   E   F");
   Serial.println("            X        ");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0); 
-  asyncTask3Alerta.Start();
-  asyncTaskTime1.Start();
+  Tarea3.Start();
+  Tiempo1.Start();
 }
 
 /**
@@ -133,33 +133,33 @@ void inputALer()
  */
 void outputAler()
 {
-  asyncTask3Alerta.Stop();
-  asyncTaskTime1.Stop();
+  Tarea3.Stop();
+  Tiempo1.Stop();
 }
 
 /**
- * @brief Función de entrada para el estado MONITOR_TEMP de la máquina de estados.
+ * @brief Función de entrada para el estado TemperaturaM de la máquina de estados.
  */
 void inputTem()
 {
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println("Estado Temperatura");
   Serial.println("A   B   C   D   E   F");
   Serial.println("                X    ");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0); 
-  asyncTask4Temperatura.Start();
-  asyncTaskTime3.Start();
+  Tarea4.Start();
+  Tiempo3.Start();
 }
 
 /**
- * @brief Función de salida para el estado MONITOR_TEMP de la máquina de estados.
+ * @brief Función de salida para el estado TemperaturaM de la máquina de estados.
  */
 void outputTem()
 {
-  asyncTask4Temperatura.Stop();
-  asyncTaskTime3.Stop();
+  Tarea4.Stop();
+  Tiempo3.Stop();
 }
 
 /**
@@ -167,15 +167,15 @@ void outputTem()
  */
 void inputAlar()
 {
-  currentInput = Input::Unknown;
+  Inputc = Input::Unknown;
   Serial.println(" Estado Alarma");
   Serial.println("A   B   C   D   E   F");
   Serial.println("                    X");
   Serial.println();
   lcd.clear();
   lcd.setCursor(0, 0); 
-  asyncTask4Alarma.Start();
-  asyncTaskTime4.Start();
+  Tarea5.Start();
+  Tiempo4.Start();
 }
 
 /**
@@ -183,6 +183,6 @@ void inputAlar()
  */
 void outputAlar()
 {
-  asyncTask4Alarma.Stop();
-  asyncTaskTime4.Stop();
+  Tarea5.Stop();
+  Tiempo4.Stop();
 }
