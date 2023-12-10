@@ -1,5 +1,5 @@
 /**
- \file pinout.h
+ \file Pines.h
  \date   2023-08-12
  author Harry Rosero <harryrosero@unicauca.edu.co> - Daniel Muñoz <danielfmunoz@unicauca.edu.co>
  @brief  Final Arquiitectura.
