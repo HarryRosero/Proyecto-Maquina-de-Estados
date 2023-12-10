@@ -56,3 +56,4 @@ private:
 	void initVariables();
 };
 #endif
+
