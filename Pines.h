@@ -10,7 +10,6 @@ const int Led = 13;
 const float BETA = 3950;/** Valor beta para el sensor de temperatura. */
 
 #define DHTPIN  A1
-
 #define resistance 10
 
 /** Pines para los led de verde, azul y rojo */
