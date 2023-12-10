@@ -50,7 +50,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 /********************************************//**
  * Contraseña de seguridad
  ***********************************************/
-const String password = "6789";
+const String Contra = "6789";
 int attempts = 0;
 
 /********************************************//**
@@ -122,8 +122,8 @@ enum Input
   BLOQUEADO = 1,
   Timeout = 2,
   LUZ = 3,
-  TEMP = 4,
-  Unknown = 5,
+  Temperatur = 4,
+  NoInfo = 5,
 };
 
 /********************************************//**
@@ -213,13 +213,13 @@ String Escribir()
  ***********************************************/
 void Seguridad() 
 {
-  const int maxAttempts = 3;
+  const int IntentosMax = 3;
 
-  for (int intentos = 0; intentos < maxAttempts; ++intentos) {
+  for (int intentos = 0; intentos < IntentosMax; ++intentos) {
 
-    String enteredPassword = Escribir();
+    String IngresarContra = Escribir();
 
-    if (enteredPassword.equals(password)) {      
+    if (IngresarContra.equals(Contra)) {      
       lcd.print("contrasenia");
       lcd.setCursor(0,1);
       lcd.print("correcta");
@@ -299,7 +299,7 @@ void Temperatura(){
 
   if(celsius > 30)
   {
-    Inputc = Input::TEMP;
+    Inputc = Input::Temperatur;
   }
   Serial.println();
 }
@@ -309,19 +309,15 @@ void Alarma(){
   lcd.setCursor(0,0);
   lcd.print("Alarma");
   for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
-
     // calcula la duración de cada nota
     divider = melodia[thisNote + 1];
 
-    if (divider > 0) {
-      noteDuration = (wholenote) / divider;
-
-    } else if (divider < 0) {
+    if (divider > 0) {noteDuration = (wholenote) / divider;} 
+    else if (divider < 0) {
       //aumenta la duración a la mitad para las notas punteadas
       noteDuration = (wholenote) / abs(divider);
       noteDuration *= 1.5;
     }
-
     tone(buzzer, melodia[thisNote], noteDuration * 0.9);
     delay(noteDuration);
     noTone(buzzer);
