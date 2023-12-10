@@ -16,7 +16,7 @@ intended publication of this material.
 */
 
 
-#include "pinout.h"
+#include "Pines.h"
 #include "StateMachineLib.h"
 #include <LiquidCrystal.h>
 #include <Keypad.h>
