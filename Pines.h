@@ -5,7 +5,6 @@
  @brief  Final Arquiitectura.
  * @brief Definiciones de pines y constantes utilizadas en el proyecto.
  */
-
 const int PinLu = A0;/** Pin analógico para el sensor de luz. */
 const int Led = 13;
 const float BETA = 3950;/** Valor beta para el sensor de temperatura. */
@@ -15,9 +14,9 @@ const float BETA = 3950;/** Valor beta para el sensor de temperatura. */
 #define resistance 10
 
 /** Pines para los led de verde, azul y rojo */
-#define pingreen 9
-#define pinblue 10
-#define pinred 8
+#define pinVerde 9
+#define pinAzul 10
+#define pinRojo 8
 
 /** Número de filas y columnas en el teclado */
 const byte ROWS = 4;
